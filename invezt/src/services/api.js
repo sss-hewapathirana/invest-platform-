@@ -26,13 +26,19 @@ api.interceptors.request.use(
 
 // Response interceptor for error handling
 api.interceptors.response.use(
-(response) => response,
+(response) => {
+    // Return data from ApiResponse structure
+    if (response.data && response.data.status === 200 || response.data.status === 201) {
+        return response.data;
+    }
+    return response;
+},
 (error) => {
     if (error.response?.status === 401) {
     localStorage.removeItem('token');
     window.location.href = '/login';
     }
-    return Promise.reject(error);
+    return Promise.reject(error.response?.data || error);
 }
 );
 
@@ -41,12 +47,13 @@ export const authAPI = {
 login: (email, password) => 
     api.post('/auth/login', { email, password }),
 
-register: (data) => 
-    api.post('/auth/register', data),
+signup: (data) => 
+    api.post('/auth/signup', data),
 
 refreshToken: (token) => 
     api.post('/auth/refresh', { token }),
 };
+
 
 // Stock APIs
 export const stockAPI = {

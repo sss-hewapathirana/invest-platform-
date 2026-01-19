@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
+import { useEffect, useState } from 'react';
 import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import DashboardPage from './pages/DashboardPage';
+import Header from './components/Header';
 import AnalyzerPage from './pages/AnalyzerPage';
 import ComparePage from './pages/ComparePage';
-import PortfolioPage from './pages/PortfolioPage';
-import ValuationPage from './pages/ValuationPage';
+import DashboardPage from './pages/DashboardPage';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
 import NewsPage from './pages/NewsPage';
+import PortfolioPage from './pages/PortfolioPage';
+import SignupPage from './pages/SignupPage';
+import ValuationPage from './pages/ValuationPage';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -19,7 +20,7 @@ const App = () => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
-      if (currentPage === 'home' || currentPage === 'login') {
+      if (currentPage === 'home' || currentPage === 'login' || currentPage === 'signup') {
         setCurrentPage('dashboard');
       }
     }
@@ -28,7 +29,7 @@ const App = () => {
   const handleNavigate = (page) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
+
     // If navigating to home, logout
     if (page === 'home' && isLoggedIn) {
       setIsLoggedIn(false);
@@ -47,6 +48,8 @@ const App = () => {
         return <HomePage onNavigate={handleNavigate} />;
       case 'login':
         return <LoginPage onNavigate={handleNavigate} onLogin={handleLogin} />;
+      case 'signup':
+        return <SignupPage onNavigate={handleNavigate} onLogin={handleLogin} />;
       case 'dashboard':
         return <DashboardPage onNavigate={handleNavigate} />;
       case 'analyzer':
